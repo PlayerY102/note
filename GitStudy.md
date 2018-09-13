@@ -7,6 +7,14 @@
     git config --global user.name 当先用户配置  
     git config --list 检查已有的配置信息  
 
+## 上传仓库
+
+* git init  
+    git add .  
+    git commit -m ''  
+    git remote add origin github仓库地址  
+    git push -u origin master  
+
 ## 修改
 
 * git clone repository链接  
@@ -18,6 +26,7 @@
 
 * git push origin master  
     git push <远程主机名> <本地分知名>:<远程分支名>  
+    git push origin :mater相当于删除远程master分支  
     可以简单用为 git push
 
 ## pull
