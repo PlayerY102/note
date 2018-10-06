@@ -37,3 +37,21 @@
 * 走楼梯问题,可以走1,2,3,不能连续两个3
 * f(n)=find(n-1)+find(n-2)+find(n-4)+find(n-5)
 * f(n-6)不都是合法到f(n-3)
+
+## merge msort
+
+* 可用于 i小于j a[i]与b[j]比较的题目
+
+``` c
+    int mid=(l+r)/2;
+    for(int i=l,j=mid+1;i<=mid;i++){
+        while(inp[i]>2*inp[j]&&j<=r){
+            j++;
+        }
+        ans+=j-mid-1;
+    }
+```
+
+## xor
+
+* a^a=0,a^b=c,a^c=b
