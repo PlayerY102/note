@@ -57,3 +57,25 @@
         ans+=j-mid-1;
     }
   ```
+
+## 图
+
+* 不在意路径的图可以用树来做(并查集)
+
+    ```c
+    int father[max_size];
+    int find_fa(int n){
+        while(father[n]!=n){
+            n=father[n];
+        }
+        return n;
+    }
+    for(int i=0;i< n;i++){
+        father[i]=i;
+    }
+    int fx=find_fa(x);
+    int fy=find_fa(y);
+    if(fx!=fy){
+        father[fy]=fx;
+    }
+    ```
