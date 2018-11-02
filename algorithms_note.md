@@ -58,6 +58,10 @@
     }
   ```
 
+## quick sort
+
+* 可用于查找第n个元素
+
 ## 图
 
 * 不在意路径的图可以用树来做(并查集)
@@ -77,5 +81,68 @@
     int fy=find_fa(y);
     if(fx!=fy){
         father[fy]=fx;
+    }
+    ```
+
+## dynamic planning
+
+* 三个重要概念
+  1. 最优子结构: 单个例子的最优结果
+  2. 边界: 无需继续简化的结果
+  3. 状态转移公式: 阶段与阶段之间的状态转移方程
+
+* 背包问题
+  * 基础背包  
+  状态转移方程:
+    ```cpp
+    f[i][v]=max{f[i-1][v],f[i-1][v-w[i]]+v[i]}
+    f[v]=max{f[v],f[v-w[i]]+v[i]}
+    ```
+  * 01背包  
+    迭代方向从右往左
+  * 完全背包  
+    迭代方向从左往右
+    ```cpp
+    for (int i = 0; i < N; i++)
+        {
+            for (int j = wei[i]; j <= P; j++)
+            {
+                outp[j] = max(outp[j], outp[j - wei[i]] + val[i]);
+            }
+        }
+    ```
+  * 限定背包必须装满  
+    -1初始化容量限定背包必须装满
+    ```cpp
+    for(int i=0;i<N;i++){
+            for(int j=P;j>=wei[i];j--){
+                if(outp[j-wei[i]]!=-1 && outp[j-wei[i]]+val[i]>outp[j]){
+                    outp[j]=outp[j-wei[i]]+val[i];
+                }
+            }
+        }
+    ```
+  * 多重背包  
+    将多重背包转化成01背包和完全背包
+    ```cpp
+    void compack(int val,int wei,int v){
+        for(int i=wei;i<=v;i++){
+            outp[i]=max(outp[i],outp[i-wei]+val);
+        }
+    }
+    void zeropack(int val,int wei,int v){
+        for(int i=v;i>=wei;i--){
+            outp[i]=max(outp[i],outp[i-wei]+val);
+        }
+    }
+    if(wei*tot>=v){
+        compack(val,wei,v);
+    }
+    else{
+        for(int j=1;j< tot; j=j*2){
+            zeropack(j*val,j*wei,v);
+            tot-=j;
+        }
+        zeropack(tot*val,tot*wei,v);
     }
     ```
