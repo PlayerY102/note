@@ -3,17 +3,12 @@
 ## 运算
 
 * 取模 mod
-
-  ``` c
+    ``` c
     1. (a + b) % p = (a % p + b % p) % p  
-
     2. (a - b) % p = (a % p - b % p) % p  
-
     3. (a * b ) % p = ( a % p * b % p ) % p  
-
     4. a ^ b % p = ((a % p)^b) % p
-  ```
-
+    ```
   * 3%4=3%5=3%6=3
 * xor 异或
   * a^a=0,a^b=c,a^c=b
@@ -91,6 +86,11 @@
   2. 边界: 无需继续简化的结果
   3. 状态转移公式: 阶段与阶段之间的状态转移方程
 
+* 注意
+  1. 初始化
+  2. 迭代方向
+  3. 最小的问题
+
 * 背包问题
   * 基础背包  
   状态转移方程:
@@ -146,3 +146,34 @@
         zeropack(tot*val,tot*wei,v);
     }
     ```
+* 流水线问题
+
+* 序列问题
+    1. 最长公共序列
+        ```cpp
+        for(int i=1;i<=x_size;i++){
+                for(int j=1;j<=y_size;j++){
+                    if(x[i-1]==y[j-1]){
+                        value[i][j]=value[i-1][j-1]+1;
+                    }
+                    else{
+                        value[i][j]=max(value[i-1][j],value[i][j-1]);
+                    }
+                }
+            }
+        ```
+    2. 最长上升（下降）序列
+        ```cpp
+        for(int i=2;i<=n;i++){
+            for(int j=1;j< i;j++){
+                if(inp[i]<=inp[j]){
+                    dp[i]=max(dp[i],dp[j]+1);
+                }
+                else{
+                    dp[i]=max(dp[i],1);
+                }
+            }
+        }
+        ```
+    3. 最长子序列和
+        * dp[i] = max{A[i], dp[i-1]+A[i]}
