@@ -61,5 +61,4 @@
     ```
     Return value
     An iterator to the lower bound of val in the range.
-    If all the element in the range compare less than val, the function returns last.
-
+    If all the element in the range compare less than val, the function returns last.x

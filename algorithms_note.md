@@ -174,6 +174,41 @@
                 }
             }
         }
-        ```
+        ```  
     3. 最长子序列和
         * dp[i] = max{A[i], dp[i-1]+A[i]}
+
+* 最优二叉查找树
+    1. 状态转移方程
+        ```cpp
+        dp[i][j]=q[i-1]; (j==i-1)
+        dp[i][j]=min(dp[i][k]+dp[k+1][j]+sum[i][j]);
+        ```
+    2. 用root二维数组来存储根节点
+
+## 贪心
+
+* 二分贪心
+    1. 注意条件  
+    求最小right
+    ```cpp
+    int judge(int mid){
+        if(mid is right){
+            return 1;
+        }
+        return 0;
+    }
+    while(left<=right){
+        int mid=(left+right)/2;
+        if(judge(mid)){
+            right=mid-1;
+        }
+        else{
+            left=mid+1;
+        }
+    }
+    return left;
+    ```  
+    right右边全是满足的，left左边全部不满足。  
+    结束后 left在right右边  
+    left是满足条件的最小代价
