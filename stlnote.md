@@ -61,4 +61,6 @@
     ```
     Return value
     An iterator to the lower bound of val in the range.
-    If all the element in the range compare less than val, the function returns last.x
+    If all the element in the range compare less than val, the function returns last.x  
+    利用二分查找在[first,end-1]中查找第一个大于或等于num的数字，返回该数字的地址。
+    uper_bound则是返回第一个大于num的地址。

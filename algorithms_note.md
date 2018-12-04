@@ -10,6 +10,17 @@
     4. a ^ b % p = ((a % p)^b) % p
     ```
   * 3%4=3%5=3%6=3
+  * 取模减法等于+mod-该数
+  * 取模除法逆元  
+  逆元一般用扩展欧几里得算法来求得，如果为m素数，那么还可以根据费马小定理得到逆元为a^(m-2) mod m。（都要求a和m互质）
+
+    ```cpp
+    long long inv(long long a, long long m) {
+        if (a == 1)return 1;
+        return inv(m % a, m) * (m - m / a) % m;
+    }
+    ```
+
 * xor 异或
   * a^a=0,a^b=c,a^c=b
 
@@ -38,6 +49,24 @@
   * 走楼梯问题,可以走1,2,3,不能连续两个3
   * f(n)=find(n-1)+find(n-2)+find(n-4)+find(n-5)
   * f(n-6)不都是合法到f(n-3)
+
+* 可用于dp的dfs
+  * 用dp数组存储值  
+    ```cpp
+    int dp[max_size][107];
+    int dfs(int x,int y){
+        if(dp[x][y]!=-1){
+            return dp[x][y];
+        }
+        if(y>=10){
+            dp[x][y]=dfs(x-1,y-9)+60;
+        }
+        else{
+            dp[x][y]=max(dfs(x-1,y+1)+17,dfs(x-1,y+5));
+        }
+        return dp[x][y];
+    }
+    ```
 
 ## merge msort
 
@@ -78,6 +107,115 @@
         father[fy]=fx;
     }
     ```
+* 最大二分匹配(最大点覆盖)
+
+  * 关键是找增广路，直到无法凑出增广路时，就是最大二分匹配，以下代码只能用于二分图，不是二分图需做修改
+  * 可以证明最大二分匹配就是最大点覆盖
+    ```cpp
+    vector<int>points[max_size];
+    int visit[max_size];
+    int match[max_size];
+    bool dfs(int x){
+        for(int i=0;i<points[x].size();i++){
+            int to=points[x][i];
+            if(!visit[to]){
+                visit[to]=1;
+                if(match[to]==0||dfs(match[to])){
+                    match[to]=x;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    int maxmatch(int n,int m){
+        for(int i=1;i<m;i++){
+            match[i]=0;
+        }
+        int ans=0;
+        for(int i=1;i<n;i++){
+            for(int i=0;i<m;i++){
+                visit[i]=0;
+            }
+            if(dfs(i)){
+                ans++;
+            }
+        }
+        return ans;
+    }
+    ```
+* 最大流
+  * 在一个无向图G=(V,E)中
+    * 点覆盖集：无向图G的一个点集，使得该图中的所有边都至少有一个端点在该集合内。
+    * 点独立集：无向图G的一个点击，使得任意两个在该集合中的点在原图中都不相邻。
+    * 最小点覆盖集：点数最少的点覆盖集
+    * 最大点独立集：点数最多的点独立集
+    * 最小点权覆盖集：点权之和最小的点覆盖集
+    * 最大点权独立集：点权之和最大的点独立集
+    * 最大二分匹配
+    * 最大流
+    * 最小覆盖数=最大匹配
+    * 可证明 最大独立集=总数-最小覆盖集
+    * 可用最大流来计算，用边权代替点权，则最小点权覆盖集与最大点权独立集互补
+  * dinic算法
+  * bfs时分层函数用于优化速度，可以再使用当前边来优化
+  * dfs找增广路，答案每次加一个当前路径最小值，修改对于路径的值，继续dfs知道无法找到路径  
+  * 继续bfs，dfs直到bfs无法找到到达汇点的路
+  * 无向路来回建立两次相同weight的有向路
+    ```cpp
+    vector<int>points[maxN];
+    int edge_w[maxN*2];
+    int edge_to[maxN*2];
+    int s,t;
+    int point_depth[maxN];
+    bool bfs(){
+        memset(point_depth,0,sizeof(point_depth));
+        queue<int> Q;
+        Q.push(s);
+        point_depth[s]=1;
+        while(!Q.empty()){
+            int temp=Q.front();
+            Q.pop();
+            for(int i=0;i<points[temp].size();i++){
+                int edge_num=points[temp][i];
+                int next_point=edge_to[edge_num];
+                if(edge_w[edge_num]>0&&point_depth[next_point]==0){
+                    Q.push(next_point);
+                    point_depth[next_point]=point_depth[temp]+1;
+                }
+            }
+        }
+        return point_depth[t]!=0;
+    }
+    int dfs(int u,int dist){
+        if(u==t){
+            return dist;
+        }
+        for(int i=0;i<points[u].size();i++){
+            int edge_num=points[u][i];
+            int next_point=edge_to[edge_num];
+            if(point_depth[next_point]==point_depth[u]+1 && edge_w[edge_num]>0){
+                int di=dfs(next_point,min(edge_w[edge_num],dist));
+                if(di>0){
+                    edge_w[edge_num]-=di;
+                    edge_w[edge_num^1]+=di;
+                    return di;
+                }
+            }
+        }
+        return 0;
+    }
+    int dinic(){
+        int ans=0;
+        int INF=(unsigned)-1>>1;
+        while(bfs()){
+            while(int n=dfs(s,INF)){
+                ans+=n;
+            }
+        }
+        return ans;
+    }
+    ```
 
 ## dynamic planning
 
@@ -90,6 +228,10 @@
   1. 初始化
   2. 迭代方向
   3. 最小的问题
+
+* 实现方法
+  * 循环迭代
+  * dfs
 
 * 背包问题
   * 基础背包  
