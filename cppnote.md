@@ -24,3 +24,44 @@
 
 * 可以用c-风格字符串来初始化string对象
 * 可以用数组表示法来访问
+
+## const 关键字
+
+## operator 关键字
+
+* 操作符重载
+  * 作为类成员函数
+    ```cpp
+    class person{
+    private:
+        int age;
+        public:
+        person(int a){
+        this->age=a;
+        }
+    inline bool operator == (const person &ps) const;
+    };
+    inline bool person::operator==(const person &ps) const
+    {
+
+        if (this->age==ps.age)
+            return true;
+        return false;
+    }
+    ```
+  * 作为全局函数需要制定两个参数
+    ```cpp
+    class person
+    {
+    public:
+    int age;
+    public:
+    };
+
+    bool operator==(person const &p1 ,person const & p2)
+    {
+    if(p1.age==p2.age)
+    return true;
+    return false;
+    }
+    ```
