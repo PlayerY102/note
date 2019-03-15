@@ -167,3 +167,36 @@
 
   * finally{}
     * 在try-catch语句后面，try catch return 也执行，System.exit(0)不执行
+
+## 多线程
+
+* Thread 类
+  * run方法必须实现
+  * start方法启动线程
+  * new Thread(Runable)
+
+* Runnable接口
+  * run方法必须实现
+
+* start() 启动线程
+
+* run() 定义线程对象被调用后所执行的操作
+
+* sleep(int millsecond) 线程的调度执行时按照其优先级的高低顺序进行的，当高级别的线程未死亡时，低级别的线程没有机会获得cpu资源。高优先级线程调用sleep()可以放弃自己的cpu资源，给低优先级别线程资源。
+
+* isAlive() 线程run()时未进入死亡状态之前，返回true
+
+* currentThread() Thread类中的类方法，返回当先正在使用cpu资源的线程
+
+* interrupt() 唤醒sleep的thread导致抛出InterruptExceptoin异常
+
+* 线程同步 synchornized 修饰同步方法
+
+* wait() notify() notifyAll()
+  * 先中断先继续
+  * 不可在非同步方法中使用wait(),notify(),notifyAll()
+
+* 线程联合
+  * B.join() A在运行期间联合了B 如果线程A在占有cpu资源期间一旦联合B线程，那么A线程将立刻中断执行，等到B执行完毕，A线程再重新排队等待cpu资源。
+  * 如果A准备联合的B线程已经结束，B.join()不会产生任何效果
+  
